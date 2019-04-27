@@ -30,7 +30,7 @@ const showPage = (studentList, page ) => {
 ***/
 
 const appendPageLinks = (studentList) => {
-   const pages = studentList.length / studentsPerPage;
+   const pages = (studentList.length / studentsPerPage) + 1;
    
    const pageDiv = document.querySelector('div.page');
    const paginationDiv = document.createElement('div');
@@ -49,7 +49,19 @@ const appendPageLinks = (studentList) => {
       paginationUl.appendChild(paginationList);
    }
 
+   paginationLi = paginationUl.childNodes;
    
+   paginationLi[0].firstChild.className = 'active';
+
+   paginationUl.addEventListener('click', (e) => {
+
+      for(let i = 0 ; i < paginationLi.length ; i++){
+         paginationLi[i].firstChild.className = '';
+      }
+      e.target.className = 'active';
+      clickedList = e.target.textContent;
+      showPage(studentList, clickedList);
+   })
 }
 
 appendPageLinks(studentList);
