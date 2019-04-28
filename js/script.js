@@ -5,7 +5,6 @@ List Filter and Pagination
 const studentList = document.querySelectorAll('.student-item');
 const studentsPerPage = 10;
 const headerDiv = document.querySelector('.page-header');
-const studentNames = document.querySelectorAll('h3');
 
 // Shows the number of students per page, hides the rest of them.
 const showPage = (studentList, page ) => {
@@ -62,38 +61,45 @@ const appendPageLinks = (studentList) => {
    });
 };
 
-const search = (studentNames,studentList) => {
+const search = (studentList) => {
    const searchDiv = document.createElement('div');
    const searchInput = document.createElement('input');
-   const inputValue = searchInput.value.toLowerCase();
-   const searchedList = [];
+   const button = document.createElement('button');
+   const studentNames = document.querySelectorAll('h3');
+   const pageDiv = document.querySelector('.page');
+   const paginationDiv = document.querySelector('.pagination');
 
    headerDiv.appendChild(searchDiv);
    searchDiv.appendChild(searchInput);
+   searchDiv.appendChild(button);
+
 
    searchDiv.className = 'student-search';
    searchInput.placeholder = 'Search for students...';
+   button.innerText = 'Search';
 
-   searchInput.addEventListener('keyup', (e) =>{
+   searchInput.addEventListener('keyup', () =>{
       for(let i = 0 ; i < studentList.length ; i++){
-         if(studentNames[i].textContent.toLowerCase().includes(inputValue)){
-            studentList[i].style.display = '';
-            searchedList.push[studentList[i]];
+         if(studentNames[i].textContent.includes(searchInput.value)){
+            studentList[i].style.display = ''
+            
          }
          else{
-            studentList[i].style.display = 'none';
+            studentList[i].style.display = 'none'
          }
       }
-      appendPageLinks(searchedList);
-      showPage(searchedList,1);
+      console.log(studentList.length);
    })
-}
+   
+
+
+
+};
 
 
 //Loads the webpage with the first page of the pagination.
 showPage(studentList,1);
 
-search(studentNames, studentList);
-
+search(studentList);
 appendPageLinks(studentList);
 
