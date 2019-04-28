@@ -7,7 +7,7 @@ const studentsPerPage = 10;
 const headerDiv = document.querySelector('.page-header');
 
 // Shows the number of students per page, hides the rest of them.
-const showPage = (studentList, page ) => {
+const showPage = (list, page ) => {
    //Defines startIndex and endIndex to define limit of students
    const startIndex = ( page * studentsPerPage ) - studentsPerPage;
    const endIndex = ( page * studentsPerPage );
@@ -23,7 +23,7 @@ const showPage = (studentList, page ) => {
 }
 
 //Creates the pagination buttons and gives functionality in order to show certain students per page
-const appendPageLinks = (studentList) => {
+const appendPageLinks = (list) => {
    const pages = (studentList.length / studentsPerPage) + 1;
    
    //Creates the pagination div and unorder list
@@ -61,11 +61,12 @@ const appendPageLinks = (studentList) => {
    });
 };
 
-const search = (studentList) => {
+const search = () => {
    const searchDiv = document.createElement('div');
    const searchInput = document.createElement('input');
    const button = document.createElement('button');
    const studentNames = document.querySelectorAll('h3');
+   const filterStudentsArray = [];
    const pageDiv = document.querySelector('.page');
    const paginationDiv = document.querySelector('.pagination');
 
@@ -73,26 +74,33 @@ const search = (studentList) => {
    searchDiv.appendChild(searchInput);
    searchDiv.appendChild(button);
 
-
    searchDiv.className = 'student-search';
    searchInput.placeholder = 'Search for students...';
    button.innerText = 'Search';
 
-   searchInput.addEventListener('keyup', () =>{
+   const filter = () => {
       for(let i = 0 ; i < studentList.length ; i++){
          if(studentNames[i].textContent.includes(searchInput.value)){
             studentList[i].style.display = ''
-            
+            filterStudentsArray.push(studentList[i]);
          }
          else{
             studentList[i].style.display = 'none'
          }
       }
-      console.log(studentList.length);
+   }
+
+   searchInput.addEventListener('keyup', () =>{
+      for(let i = 0 ; i < studentList.length ; i++){
+         filter();
+      }
    })
    
-
-
+   button.addEventListener('click', () => {
+      for(let i = 0 ; i < studentList.length ; i++){
+         filter();
+      }
+   })
 
 };
 
