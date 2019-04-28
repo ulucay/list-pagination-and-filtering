@@ -13,18 +13,19 @@ const showPage = (list, page ) => {
    const startIndex = ( page * studentsPerPage ) - studentsPerPage;
    const endIndex = ( page * studentsPerPage );
    //Shows the list of students per page
-   for( let i = 0 ; i < studentList.length ; i++){
+   for( let i = 0 ; i < list.length ; i++){
       if( i >= startIndex && i < endIndex ){
-         studentList[i].style.display = ''
+         list[i].style.display = ''
       }
       else{
-         studentList[i].style.display = 'none';
+         list[i].style.display = 'none';
       }
    }
 }
 
 //Creates the pagination buttons and gives functionality in order to show certain students per page
 const appendPageLinks = (list) => {
+   
    const pages = (list.length / studentsPerPage) + 1;
    
    //Creates the pagination div and unorder list
@@ -63,13 +64,13 @@ const appendPageLinks = (list) => {
 };
 
 const search = () => {
-   filterStudentsArray = [];
+   //Creates search bar and related elements
    const searchDiv = document.createElement('div');
    const searchInput = document.createElement('input');
    const button = document.createElement('button');
    const studentNames = document.querySelectorAll('h3');
    const pageDiv = document.querySelector('.page');
-   const paginationDiv = document.querySelector('.pagination');
+   const errorMessage = document.createElement('h2');
 
    headerDiv.appendChild(searchDiv);
    searchDiv.appendChild(searchInput);
@@ -78,8 +79,16 @@ const search = () => {
    searchDiv.className = 'student-search';
    searchInput.placeholder = 'Search for students...';
    button.innerText = 'Search';
+   errorMessage.innerHTML = 'No result';
+   errorMessage.style.color = '#E36165';
+   errorMessage.style.fontSize ='1.75em';
 
+//Filters the students according to input value in the search bar
    const filter = () => {
+      //Clears the array to have an correct result each time user searchs
+      filterStudentsArray = [];
+
+      //Iterates through the list of the students and filters
       for(let i = 0 ; i < studentList.length ; i++){
          if(studentNames[i].textContent.includes(searchInput.value)){
             studentList[i].style.display = ''
@@ -89,24 +98,32 @@ const search = () => {
             studentList[i].style.display = 'none'
          }
       }
+
+      //If there is no result, shows error message
+      if(filterStudentsArray.length === 0){
+         pageDiv.appendChild(errorMessage);
+      }
+      else{
+         errorMessage.remove();
+      }
+
+      //Removes initial pagination and adds the new one according to search result
+      const paginationDiv = document.querySelector('.pagination');
+      pageDiv.removeChild(paginationDiv);
+      appendPageLinks(filterStudentsArray);
+      showPage(filterStudentsArray,1);
+
    }
-
-   searchInput.addEventListener('keyup', () =>{
-      for(let i = 0 ; i < studentList.length ; i++){
-         filter();
-      }
-      appendPageLinks(filterStudentsArray);
-      showPage(filterStudentsArray,1)
-   })
    
-   button.addEventListener('click', () => {
-      for(let i = 0 ; i < studentList.length ; i++){
-         filter();
-      }
-      appendPageLinks(filterStudentsArray);
-      showPage(filterStudentsArray,1)
+   //Executes filter function when there is an input in the search bar
+   searchInput.addEventListener('keyup', () =>{
+      filter();
    })
 
+   //Executes filter function when the button is clicked
+   button.addEventListener('click', () => {
+      filter();
+   })
 };
 
 
@@ -114,6 +131,6 @@ const search = () => {
 showPage(studentList,1);
 
 search(studentList);
-/* search(studentList); */
+
 appendPageLinks(studentList);
 
