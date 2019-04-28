@@ -5,6 +5,7 @@ List Filter and Pagination
 const studentList = document.querySelectorAll('.student-item');
 const studentsPerPage = 10;
 const headerDiv = document.querySelector('.page-header');
+const filterStudentsArray = [];
 
 // Shows the number of students per page, hides the rest of them.
 const showPage = (list, page ) => {
@@ -24,7 +25,7 @@ const showPage = (list, page ) => {
 
 //Creates the pagination buttons and gives functionality in order to show certain students per page
 const appendPageLinks = (list) => {
-   const pages = (studentList.length / studentsPerPage) + 1;
+   const pages = (list.length / studentsPerPage) + 1;
    
    //Creates the pagination div and unorder list
    const pageDiv = document.querySelector('div.page');
@@ -34,6 +35,8 @@ const appendPageLinks = (list) => {
    paginationDiv.className = "pagination";
    pageDiv.appendChild(paginationDiv);
    paginationDiv.appendChild(paginationUl);
+
+   
    
    //Appends li, a and creates pagination 
    for(let i = 1 ; i < pages ; i++ ){
@@ -45,19 +48,19 @@ const appendPageLinks = (list) => {
       paginationUl.appendChild(paginationList);
    }
 
-   paginationLi = paginationUl.childNodes;
+   const aLinks =  document.querySelectorAll('a');
    
    //Changes className of first pagination element
-   paginationLi[0].firstChild.className = 'active';
+   aLinks[0].className = 'active';
 
    //Shows students per page and manipulates classes of pagination
    paginationUl.addEventListener('click', (e) => {
-      for(let i = 0 ; i < paginationLi.length ; i++){
-         paginationLi[i].firstChild.className = '';
+      for(let i = 0 ; i < aLinks.length ; i++){
+         aLinks[i].className = '';
       }
       e.target.className = 'active';
       clickedListNumber = e.target.textContent;
-      showPage(studentList, clickedListNumber);
+      showPage(list, clickedListNumber);
    });
 };
 
@@ -66,7 +69,6 @@ const search = () => {
    const searchInput = document.createElement('input');
    const button = document.createElement('button');
    const studentNames = document.querySelectorAll('h3');
-   const filterStudentsArray = [];
    const pageDiv = document.querySelector('.page');
    const paginationDiv = document.querySelector('.pagination');
 
@@ -109,5 +111,6 @@ const search = () => {
 showPage(studentList,1);
 
 search(studentList);
+/* search(studentList); */
 appendPageLinks(studentList);
 
