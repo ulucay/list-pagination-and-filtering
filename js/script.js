@@ -5,7 +5,7 @@ List Filter and Pagination
 const studentList = document.querySelectorAll('.student-item');
 const studentsPerPage = 10;
 const headerDiv = document.querySelector('.page-header');
-const filterStudentsArray = [];
+let filterStudentsArray = [];
 
 // Shows the number of students per page, hides the rest of them.
 const showPage = (list, page ) => {
@@ -36,8 +36,6 @@ const appendPageLinks = (list) => {
    pageDiv.appendChild(paginationDiv);
    paginationDiv.appendChild(paginationUl);
 
-   
-   
    //Appends li, a and creates pagination 
    for(let i = 1 ; i < pages ; i++ ){
       const paginationList = document.createElement('li');
@@ -65,6 +63,7 @@ const appendPageLinks = (list) => {
 };
 
 const search = () => {
+   filterStudentsArray = [];
    const searchDiv = document.createElement('div');
    const searchInput = document.createElement('input');
    const button = document.createElement('button');
@@ -96,12 +95,16 @@ const search = () => {
       for(let i = 0 ; i < studentList.length ; i++){
          filter();
       }
+      appendPageLinks(filterStudentsArray);
+      showPage(filterStudentsArray,1)
    })
    
    button.addEventListener('click', () => {
       for(let i = 0 ; i < studentList.length ; i++){
          filter();
       }
+      appendPageLinks(filterStudentsArray);
+      showPage(filterStudentsArray,1)
    })
 
 };
