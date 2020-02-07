@@ -90,7 +90,7 @@ const search = () => {
 
       //Iterates through the list of the students and filters
       for(let i = 0 ; i < studentList.length ; i++){
-         if(studentNames[i].textContent.includes(searchInput.value)){
+         if(studentNames[i].textContent.includes(searchInput.value.toLowerCase())){
             studentList[i].style.display = ''
             filterStudentsArray.push(studentList[i]);
          }
